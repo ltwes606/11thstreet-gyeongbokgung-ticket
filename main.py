@@ -2,10 +2,27 @@
 from selenium import webdriver
 # selenium으로 키를 조작하기 위한 import
 from selenium.webdriver.common.keys import Keys
-# 페이지 로딩을 기다리는데에 사용할 time 모듈 import
-import time
 from webdriver_manager.chrome import ChromeDriverManager
-import datetime
+import time
+import json
+import requests
+
+KAKAO_TOKEN = ""
+
+def send_to_kakao():
+    url = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
+    header = {'Authorization': 'Bearer ' + KAKAO_TOKEN}
+    post = {
+        "object_type": "text",
+        "text": "https://ticket.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961",
+        "link": {
+            "web_url": "https://ticket.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961",
+            "mobile_web_url": "https://ticket.m.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961"
+        },
+        "button_title": "바로 가기"
+    }
+    data = {"template_object": json.dumps(post)}
+    return requests.post(url, headers=header, data=data)
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get("https://ticket.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961")
@@ -20,8 +37,6 @@ while True:
     
     # 예약 현황
     content = driver.find_element_by_css_selector("#tabpanelBuy1 > div > div.c_ticket_timetable > ul > li > label > span")
-    
-    now = datetime.datetime.now()
-    current_time = now.strftime("%Y-%m-%d %H:%M")
-    print(f'{current_time}: {content.text}')
+    if (content.text == "2023. 05. 20 (토) 19:00 - 매진"):
+        send_to_kakao()
     time.sleep(30)
