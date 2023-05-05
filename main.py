@@ -7,7 +7,7 @@ import time
 import json
 import requests
 
-KAKAO_TOKEN = ""
+KAKAO_TOKEN = "rHEYhdwL2SSutxlW7zoExxa6aOa0koOKLK4b9nVlCj10EQAAAYfsnzl9"
 
 def send_to_kakao():
     url = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
@@ -37,6 +37,6 @@ while True:
     
     # 예약 현황
     content = driver.find_element_by_css_selector("#tabpanelBuy1 > div > div.c_ticket_timetable > ul > li > label > span")
-    if (content.text == "2023. 05. 20 (토) 19:00 - 매진"):
+    if (content.text != "2023. 05. 20 (토) 19:00 - 매진"):
         send_to_kakao()
     time.sleep(30)
