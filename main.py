@@ -8,10 +8,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
+driver.get("https://ticket.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961")
 
 while True:
-    driver.get("https://ticket.11st.co.kr/Product/Detail?id=267448&prdNo=5626407961")
-    
+    driver.refresh()
     # 페이지가 완전히 로딩되도록 3초동안 기다림
     time.sleep(3)
     
